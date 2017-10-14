@@ -1,0 +1,65 @@
+<!doctype html>
+<html ng-app="index">
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="js/index.js"></script>
+		<link rel="stylesheet" href="./css/index.css">
+		
+		<title>Pro 2 Pro</title>
+		<h1 style="text-align: center">Pro 2 Pro</h1>
+	<head>
+	<body>
+		
+		<div ng-controller="ctrl1">
+			<div class="leftForm">
+				<select name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
+					<option value="">Select Team</option>
+				</select>
+				<div ng-if="selectedTeam1">
+					<select name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
+						<option value="">Select Player</option>
+					</select>
+				</div>
+			
+				<div class="label">
+					Name:
+					<span class="value"> {{name1}}</span>
+				</div>
+				<div class="label">
+					KDA:
+					<span class="value"> {{kda1}}</span>
+				</div>
+				<div class="label">
+					CS/min:
+					<span class="value"> {{csPerMin1}}</span>
+				</div>
+			</div>
+			
+			<span class="rightForm">
+				<select name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
+					<option value="">Select Team</option>
+				</select>
+				<div ng-if="selectedTeam2">
+					<select name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
+						<option value="">Select Player</option>
+					</select>
+				</div>
+			
+				<div class="label">
+					Name:
+					<span class="value"> {{name2}}</span>
+				</div>
+				<div class="label">
+					KDA:
+					<span class="value"> {{kda2}}</span>
+				</div>
+				<div class="label">
+					CS/min:
+					<span class="value"> {{csPerMin2}}</span>
+				</div>
+			</span>
+		</div>
+	</body>
+	
+</html>

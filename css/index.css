@@ -1,0 +1,18 @@
+.label {
+	font-weight:bold
+}
+
+.value{
+	font-weight:normal
+}
+
+.leftForm{
+	margin-left: 35%;
+	display: inline-block;
+}
+
+.rightForm{
+	display: inline-block;
+	float:right;
+	margin-right: 35%
+}
