@@ -1,3 +1,6 @@
+import angular from 'angular';
+import $ from 'jquery';
+
 var index = angular.module('index', []);
 
 var url = "http://api.lolesports.com/api/v2/tournamentPlayerStats?groupName=regular_season&tournamentId=9c67f1fe-34d8-445b-a93f-d93e0ecd0056";
