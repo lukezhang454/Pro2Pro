@@ -1,60 +1,61 @@
 <!doctype html>
 <html ng-app="index">
 	<head>
-		<script src="./build/index.bundle.js"></script>
+		<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="./css/index.css">
+		<script src="./build/index.bundle.js"></script>
 		
 		<title>Pro 2 Pro</title>
-		<h1 style="text-align: center">Pro 2 Pro</h1>
+		<h1>Pro 2 Pro</h1>
 	<head>
 	<body>
 		
 		<div ng-controller="ctrl1">
 			<div class="leftForm">
-				<select name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
+				<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
 					<option value="">Select Team</option>
 				</select>
 				<div ng-if="selectedTeam1">
-					<select name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
+					<select class="form-control" name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
 						<option value="">Select Player</option>
 					</select>
 				</div>
 			
-				<div class="label">
+				<div class="statsLabel">
 					Name:
-					<span class="value"> {{name1}}</span>
+					<span class="statsValue"> {{name1}}</span>
 				</div>
-				<div class="label">
+				<div class="statsLabel">
 					KDA:
-					<span class="value"> {{kda1}}</span>
+					<span class="statsValue"> {{kda1}}</span>
 				</div>
-				<div class="label">
+				<div class="statsLabel">
 					CS/min:
-					<span class="value"> {{csPerMin1}}</span>
+					<span class="statsValue"> {{csPerMin1}}</span>
 				</div>
 			</div>
 			
 			<span class="rightForm">
-				<select name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
+				<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
 					<option value="">Select Team</option>
 				</select>
 				<div ng-if="selectedTeam2">
-					<select name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
+					<select class="form-control" name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
 						<option value="">Select Player</option>
 					</select>
 				</div>
 			
-				<div class="label">
+				<div class="statsLabel">
 					Name:
-					<span class="value"> {{name2}}</span>
+					<span class="statsValue"> {{name2}}</span>
 				</div>
-				<div class="label">
+				<div class="statsLabel">
 					KDA:
-					<span class="value"> {{kda2}}</span>
+					<span class="statsValue"> {{kda2}}</span>
 				</div>
-				<div class="label">
+				<div class="statsLabel">
 					CS/min:
-					<span class="value"> {{csPerMin2}}</span>
+					<span class="statsValue"> {{csPerMin2}}</span>
 				</div>
 			</span>
 		</div>

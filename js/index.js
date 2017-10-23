@@ -1,7 +1,7 @@
-import angular from 'angular';
 import $ from 'jquery';
+import angular from 'angular';
 
-var index = angular.module('index', []);
+var index = angular.module('index', ['ui.bootstrap']);
 
 var url = "http://api.lolesports.com/api/v2/tournamentPlayerStats?groupName=regular_season&tournamentId=9c67f1fe-34d8-445b-a93f-d93e0ecd0056";
 var teams = ["TSM", "C9", "CLG", "DIG", "IMT", "FOX", "FLY", "P1", "NV", "TL"]
