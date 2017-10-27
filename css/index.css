@@ -1,5 +1,5 @@
 body {
-	background-color: #05738C
+	background-color: #084854
 }
 
 h1 {
@@ -10,23 +10,42 @@ h1 {
 	text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
 }
 
-.statsLabel {
+.table{
 	font-weight:bold;
 	color: #EEAA0C;
-	font-family: Verdana, Geneva, sans-serif
-}
-
-.statsValue{
-	font-weight:normal
+	font-family: Verdana, Geneva, sans-serif;
+	background-color: #7C8182;
+	margin-top: 75px;
+	width: 275px;
+	text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 }
 
 .leftForm{
-	margin-left: 35%;
+	margin-left: 20%;
 	display: inline-block;
+	position:absolute;
 }
 
 .rightForm{
 	display: inline-block;
-	float:right;
-	margin-right: 35%
+	right:0px;
+	margin-right: 20%;
+	position:absolute;
+}
+
+.dropdown{
+	position: absolute
+}
+
+.rightDropdown{
+	position:absolute;
+	right:0px;
+}
+
+.form-control{
+	height: 31px;
+	margin: 3px;
+	background-color: #7C8182;
+	font-weight: bold;
+	color:white;
 }

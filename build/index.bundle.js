@@ -9,9 +9,7 @@ var _angular = require('angular');
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _angularUiBootstrap = require('angular-ui-bootstrap');
-
-var _angularUiBootstrap2 = _interopRequireDefault(_angularUiBootstrap);
+require('angular-ui-bootstrap');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

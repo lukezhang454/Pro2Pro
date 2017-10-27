@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import angular from 'angular';
+import 'angular-ui-bootstrap';
 
 var index = angular.module('index', ['ui.bootstrap']);
 

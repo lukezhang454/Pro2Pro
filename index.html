@@ -12,51 +12,82 @@
 		
 		<div ng-controller="ctrl1">
 			<div class="leftForm">
-				<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
-					<option value="">Select Team</option>
-				</select>
-				<div ng-if="selectedTeam1">
-					<select class="form-control" name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
-						<option value="">Select Player</option>
+				<div class="dropdown">
+					<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
+						<option value="">Select Team</option>
 					</select>
+					<div ng-if="selectedTeam1">
+						<select class="form-control" name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
+							<option value="">Select Player</option>
+						</select>
+					</div>
 				</div>
-			
-				<div class="statsLabel">
-					Name:
-					<span class="statsValue"> {{name1}}</span>
-				</div>
-				<div class="statsLabel">
-					KDA:
-					<span class="statsValue"> {{kda1}}</span>
-				</div>
-				<div class="statsLabel">
-					CS/min:
-					<span class="statsValue"> {{csPerMin1}}</span>
-				</div>
+				<table class="table">
+					<tr>
+						<td>
+							Name
+						</td>
+						<td>
+							{{name1}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							KDA
+						</td>
+						<td>
+							{{kda1}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CS/min
+						</td>
+						<td>
+							{{csPerMin1}}
+						</td>
+					</tr>
+				</table>
 			</div>
 			
 			<span class="rightForm">
-				<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
-					<option value="">Select Team</option>
-				</select>
-				<div ng-if="selectedTeam2">
-					<select class="form-control" name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
-						<option value="">Select Player</option>
+				<div class="rightDropdown">
+					<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
+						<option value="">Select Team</option>
 					</select>
+					<div ng-if="selectedTeam2">
+						<select class="form-control" name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
+							<option value="">Select Player</option>
+						</select>
+					</div>
 				</div>
 			
-				<div class="statsLabel">
-					Name:
-					<span class="statsValue"> {{name2}}</span>
-				</div>
-				<div class="statsLabel">
-					KDA:
-					<span class="statsValue"> {{kda2}}</span>
-				</div>
-				<div class="statsLabel">
-					CS/min:
-					<span class="statsValue"> {{csPerMin2}}</span>
-				</div>
+				<table class="table">
+					<tr>
+						<td>
+							Name
+						</td>
+						<td>
+							{{name2}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							KDA
+						</td>
+						<td>
+							{{kda2}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CS/min
+						</td>
+						<td>
+							{{csPerMin2}}
+						</td>
+					</tr>
+				</table>
 			</span>
 		</div>
 	</body>
