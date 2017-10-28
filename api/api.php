@@ -26,6 +26,25 @@ $configuration = [
 $container = new \Slim\Container($configuration);
 $app = new \Slim\App($container);
 
+// From slimframework https://www.slimframework.com/docs/cookbook/route-patterns.html
+// Redirects trailing slashes to the non trailing slash function
+$app->add(function (Request $request, Response $response, callable $next) {
+    $uri = $request->getUri();
+    $path = $uri->getPath();
+    if ($path != '/' && substr($path, -1) == '/') {
+        $uri = $uri->withPath(substr($path, 0, -1));
+
+        if($request->getMethod() == 'GET') {
+            return $response->withRedirect((string)$uri, 301);
+        }
+        else {
+            return $next($request->withUri($uri), $response);
+        }
+    }
+
+    return $next($request, $response);
+});
+
 //set up logger
 $container['logger'] = function($c) {
   $logger = new \Monolog\Logger('api_logger');
@@ -48,9 +67,9 @@ $app->get('/region/{region}', function (Request $request, Response $response) {
   $statement = $db->query("SELECT region FROM player GROUP BY region");
   $validRegions = array();
   while ($row = $statement->fetch()) {
-    array_push($validRegions, $row["region"]);
+    array_push($validRegions, strtolower($row["region"]));
   }
-  $region = $request->getAttribute('region');
+  $region = strtolower($request->getAttribute('region'));
   if (is_null($region) || !in_array($region, $validRegions)) {
     $response->getBody()->write("Invalid Region");
     return $response;
