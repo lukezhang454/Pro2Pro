@@ -4,3 +4,4 @@ api/vendor/
 api/logs/
 api/config.txt
 node_modules/
+build/index.bundle.js
