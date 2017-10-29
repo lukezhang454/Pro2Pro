@@ -4,7 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'vendor/autoload.php';
 
-//set up database parameters
+// Set up database parameters
 $dbVariables = array();
 $lines = file("config.txt");
 foreach($lines as $line) {
@@ -26,26 +26,7 @@ $configuration = [
 $container = new \Slim\Container($configuration);
 $app = new \Slim\App($container);
 
-// From slimframework https://www.slimframework.com/docs/cookbook/route-patterns.html
-// Redirects trailing slashes to the non trailing slash function
-$app->add(function (Request $request, Response $response, callable $next) {
-    $uri = $request->getUri();
-    $path = $uri->getPath();
-    if ($path != '/' && substr($path, -1) == '/') {
-        $uri = $uri->withPath(substr($path, 0, -1));
-
-        if($request->getMethod() == 'GET') {
-            return $response->withRedirect((string)$uri, 301);
-        }
-        else {
-            return $next($request->withUri($uri), $response);
-        }
-    }
-
-    return $next($request, $response);
-});
-
-//set up logger
+// Set up logger
 $container['logger'] = function($c) {
   $logger = new \Monolog\Logger('api_logger');
   $file_handler = new \Monolog\Handler\StreamHandler("logs/app.log");
@@ -53,7 +34,7 @@ $container['logger'] = function($c) {
   return $logger;
 };
 
-//set up PDO database connection
+// Set up PDO database connection
 $container['db'] = function ($c) {
   $db = $c->get('settings')['db'];
   $pdo = new PDO("mysql:host=".$db['host'].";dbname=".$db["dbname"].";charset=utf8mb4", $db['user'], $db['pass']);
@@ -62,6 +43,34 @@ $container['db'] = function ($c) {
   return $pdo;
 };
 
+// Log all API requests
+$app->add(function (Request $request, Response $response, callable $next) {
+  $uri = $request->getUri();
+  $path = $uri->getPath();
+  $this->logger->addInfo("API path requested: ".$path);
+  return $next($request, $response);
+});
+
+// From slimframework https://www.slimframework.com/docs/cookbook/route-patterns.html
+// Redirects trailing slashes to the non trailing slash function
+$app->add(function (Request $request, Response $response, callable $next) {
+  $uri = $request->getUri();
+  $path = $uri->getPath();
+  if ($path != '/' && substr($path, -1) == '/') {
+    $uri = $uri->withPath(substr($path, 0, -1));
+
+    if($request->getMethod() == 'GET') {
+        return $response->withRedirect((string)$uri, 301);
+    }
+    else {
+        return $next($request->withUri($uri), $response);
+    }
+  }
+
+  return $next($request, $response);
+});
+
+// Select players by region
 $app->get('/region/{region}', function (Request $request, Response $response) {
   $db = $this->get('db');
   $statement = $db->query("SELECT region FROM player GROUP BY region");
@@ -71,7 +80,8 @@ $app->get('/region/{region}', function (Request $request, Response $response) {
   }
   $region = strtolower($request->getAttribute('region'));
   if (is_null($region) || !in_array($region, $validRegions)) {
-    $response->getBody()->write("Invalid Region");
+    $response = $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('Page not found');
+    $this->logger->addError("Bad region request: ".$region);
     return $response;
   }
   $statement = $db->query("SELECT * FROM player WHERE region='".$region."'");
@@ -88,6 +98,7 @@ $app->get('/region/{region}', function (Request $request, Response $response) {
   return $response;
 });
 
+// Display valid regions
 $app->get('/region', function (Request $request, Response $response) {
   $db = $this->get('db');
   $statement = $db->query("SELECT region FROM player GROUP BY region");
