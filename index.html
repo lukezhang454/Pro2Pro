@@ -23,28 +23,12 @@
 					</div>
 				</div>
 				<table class="table">
-					<tr>
-						<td>
-							Name
+					<tr ng-repeat="(key, value) in stats1">
+						<td class="statLabel">
+							{{key}}
 						</td>
-						<td>
-							{{name1}}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							KDA
-						</td>
-						<td>
-							{{kda1}}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							CS/min
-						</td>
-						<td>
-							{{csPerMin1}}
+						<td class="statValue">
+							{{value}}
 						</td>
 					</tr>
 				</table>
@@ -61,30 +45,13 @@
 						</select>
 					</div>
 				</div>
-			
 				<table class="table">
-					<tr>
-						<td>
-							Name
+					<tr ng-repeat="(key, value) in stats2">
+						<td class="statLabel">
+							{{key}}
 						</td>
-						<td>
-							{{name2}}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							KDA
-						</td>
-						<td>
-							{{kda2}}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							CS/min
-						</td>
-						<td>
-							{{csPerMin2}}
+						<td class="statValue">
+							{{value}}
 						</td>
 					</tr>
 				</table>

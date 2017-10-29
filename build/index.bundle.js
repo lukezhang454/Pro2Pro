@@ -17,6 +17,7 @@ var index = _angular2.default.module('index', ['ui.bootstrap']);
 
 var url = "http://api.lolesports.com/api/v2/tournamentPlayerStats?groupName=regular_season&tournamentId=9c67f1fe-34d8-445b-a93f-d93e0ecd0056";
 var teams = ["TSM", "C9", "CLG", "DIG", "IMT", "FOX", "FLY", "P1", "NV", "TL"];
+var tableDict = { Name: "", Kda: "", CSPerMin: "" };
 
 index.controller('ctrl1', function ($scope) {
 	//Shouldn't have to make a request each time a team is selected
@@ -44,17 +45,21 @@ index.controller('ctrl1', function ($scope) {
 
 	$scope.setPlayer = function (selectedPlayer, side) {
 		if (side === 'left') {
-			$scope.name1 = selectedPlayer.name;
-			$scope.kda1 = selectedPlayer.kda;
-			$scope.csPerMin1 = selectedPlayer.csPerMin;
+			$scope.stats1 = {};
+			$scope.stats1.Name = selectedPlayer.name;
+			$scope.stats1.Kda = selectedPlayer.kda;
+			$scope.stats1.CSPerMin = selectedPlayer.csPerMin;
 		} else if (side === 'right') {
-			$scope.name2 = selectedPlayer.name;
-			$scope.kda2 = selectedPlayer.kda;
-			$scope.csPerMin2 = selectedPlayer.csPerMin;
+			$scope.stats2 = {};
+			$scope.stats2.Name = selectedPlayer.name;
+			$scope.stats2.Kda = selectedPlayer.kda;
+			$scope.stats2.CSPerMin = selectedPlayer.csPerMin;
 		}
 	};
 
 	$scope.teams = teams;
+	$scope.stats1 = tableDict;
+	$scope.stats2 = tableDict;
 });
 
 },{"angular":5,"angular-ui-bootstrap":3,"jquery":6}],2:[function(require,module,exports){
