@@ -5,3 +5,4 @@ api/logs/
 api/config.txt
 node_modules/
 build/index.bundle.js
+js/index.bundle.js

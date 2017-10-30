@@ -4,8 +4,8 @@
   "description": "Application for comparing League of Legends professional player stats",
   "main": "./js/index.js",
   "scripts": {
-    "build": "browserify js/index.js -o build/index.bundle.js",
-    "watch": "watchify js/index.js -o build/index.bundle.js",
+    "build": "browserify js/index.js -o js/index.bundle.js",
+    "watch": "watchify js/index.js -o js/index.bundle.js",
     "start": "http-server -c-1 -a localhost -p 8080 -o"
   },
   "browserify": {

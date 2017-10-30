@@ -10,7 +10,18 @@ h1 {
 	text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
 }
 
+td:first-child {
+     border-left: none;
+}
+
+.table>tbody>tr>td{
+	border-top: 0;
+}
 .table{
+	border-collapse:separate;
+    border:solid #ddd 1px;
+    border-radius:6px;
+    -moz-border-radius:6px;
 	background-color: #7C8182;
 	margin-top: 75px;
 	width: 275px;
@@ -46,15 +57,12 @@ h1 {
 	color:white;
 }
 
-.statLabel{
+.statLabel, .statValue{
 	font-weight:bold;
 	color: #EEAA0C;
 	font-family: Verdana, Geneva, sans-serif;
-	text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 }
 
-.statValue{
-	font-weight:bold;
-	color: #EEAA0C;
-	font-family: Verdana, Geneva, sans-serif;
+.statLabel{
+	text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 }
