@@ -6,20 +6,30 @@
 		<link rel="stylesheet" href="./css/index.css">
 		
 		<title>Pro 2 Pro</title>
-		<h1>Pro 2 Pro</h1>
 	<head>
 	<body>
-		
-		<div ng-controller="ctrl1">
+		<div ng-controller="homeController as $ctrl">
+            <h1>Pro 2 Pro</h1>
+            <!--this is hardcoded to set the first season to be the default-->
+            <div ng-if="seasons[0]" class="topcorner">
+                <select class="form-control" name="season" ng-init="$ctrl.selectedSeason = seasons[0]" ng-options="season for season in seasons" ng-model="$ctrl.selectedSeason">
+                </select>
+            </div>
+            
 			<div class="leftForm">
 				<div class="dropdown">
-					<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
-						<option value="">Select Team</option>
+					<select class="form-control" name="region" ng-options="region for region in regions" ng-model="selectedRegion1" ng-change="onRegionChange(selectedRegion1, 'left')">
+						<option value="">Select Region</option>
 					</select>
-					<div ng-if="selectedTeam1">
-						<select class="form-control" name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
-							<option value="">Select Player</option>
+					<div ng-if="selectedRegion1">
+						<select class="form-control" name="team" ng-options="team for team in teams1" ng-model="selectedTeam1" ng-change="onTeamChange(selectedTeam1,'left')">
+							<option value="">Select Team</option>
 						</select>
+						<div ng-if="selectedTeam1">
+							<select class="form-control" name="player1" ng-options="player1.name for player1 in players1" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'left')">
+								<option value="">Select Player</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<table class="table">
@@ -36,13 +46,18 @@
 			
 			<span class="rightForm">
 				<div class="rightDropdown">
-					<select class="form-control" name="team" ng-options="team for team in teams" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
-						<option value="">Select Team</option>
+					<select class="form-control" name="region" ng-options="region for region in regions" ng-model="selectedRegion2" ng-change="onRegionChange(selectedRegion2, 'right')">
+						<option value="">Select Region</option>
 					</select>
-					<div ng-if="selectedTeam2">
-						<select class="form-control" name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
-							<option value="">Select Player</option>
+					<div ng-if="selectedRegion2">
+						<select class="form-control" name="team" ng-options="team for team in teams2" ng-model="selectedTeam2" ng-change="onTeamChange(selectedTeam2,'right')">
+							<option value="">Select Team</option>
 						</select>
+						<div ng-if="selectedTeam2">
+							<select class="form-control" name="player2" ng-options="player2.name for player2 in players2" ng-model="selectedPlayer" ng-change="setPlayer(selectedPlayer,'right')">
+								<option value="">Select Player</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<table class="table">
