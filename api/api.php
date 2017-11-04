@@ -71,7 +71,7 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 
 // Select stats by season, region, team
-$app->get('/season/{season}/region/{region}/team/{team}', function (Request $request, Response $response) {
+$app->get('/seasons/{season}/regions/{region}/teams/{team}', function (Request $request, Response $response) {
   $db = $this->get('db');
   $season = $request->getAttribute('season');
   $region = $request->getAttribute('region');
@@ -86,7 +86,7 @@ $app->get('/season/{season}/region/{region}/team/{team}', function (Request $req
 });
 
 // Show valid teams for given season, region
-$app->get('/season/{season}/region/{region}/team', function (Request $request, Response $response) {
+$app->get('/seasons/{season}/regions/{region}/teams', function (Request $request, Response $response) {
   $db = $this->get('db');
   $season = $request->getAttribute('season');
   $region = $request->getAttribute('region');
@@ -100,7 +100,7 @@ $app->get('/season/{season}/region/{region}/team', function (Request $request, R
 });
 
 // Show valid regions for given season
-$app->get('/season/{season}/region', function (Request $request, Response $response) {
+$app->get('/seasons/{season}/regions', function (Request $request, Response $response) {
   $db = $this->get('db');
   $season = $request->getAttribute('season');
   $statement = $db->query("SELECT region FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' GROUP BY player.region"); 
@@ -113,7 +113,7 @@ $app->get('/season/{season}/region', function (Request $request, Response $respo
 });
 
 // Show valid seasons
-$app->get('/season', function (Request $request, Response $response) {
+$app->get('/seasons', function (Request $request, Response $response) {
   $db = $this->get('db');
   $statement = $db->query("SELECT season FROM stats GROUP BY season");
   $data = array();
@@ -125,7 +125,7 @@ $app->get('/season', function (Request $request, Response $response) {
 });
 
 // Select players by region
-$app->get('/region/{region}', function (Request $request, Response $response) {
+$app->get('/regions/{region}', function (Request $request, Response $response) {
   $db = $this->get('db');
   $region = $request->getAttribute('region');
   $statement = $db->query("SELECT * FROM player WHERE region='".$region."'");
@@ -138,7 +138,7 @@ $app->get('/region/{region}', function (Request $request, Response $response) {
 });
 
 // Show valid regions
-$app->get('/region', function (Request $request, Response $response) {
+$app->get('/regions', function (Request $request, Response $response) {
   $db = $this->get('db');
   $statement = $db->query("SELECT region FROM player GROUP BY region");
   $data = array();

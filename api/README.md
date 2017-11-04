@@ -5,20 +5,20 @@ Replace the placeholders {} to make a request:
 
 ## Stats
 ### Available seasons:
-  https://ryany.org/pro2pro/api/season
+  https://ryany.org/pro2pro/api/seasons
 
 ### Available regions based on season:
-  https://ryany.org/pro2pro/api/season/{season}/region
+  https://ryany.org/pro2pro/api/seasons/{season}/regions
 
 ### Available teams based on season and region:
-  https://ryany.org/pro2pro/api/season/{season}/region/{region}/team
+  https://ryany.org/pro2pro/api/seasons/{season}/regions/{region}/teams
 
 ### Select by season, region, and team
-  https://ryany.org/pro2pro/api/season/{season}/region/{region}/team/{team}
+  https://ryany.org/pro2pro/api/seasons/{season}/regions/{region}/teams/{team}
 
 ## Player
 ### Available regions:
-  https://ryany.org/pro2pro/api/region
+  https://ryany.org/pro2pro/api/regions
 
 ### Select by region:
-  https://ryany.org/pro2pro/api/region/{region}
+  https://ryany.org/pro2pro/api/regions/{region}
