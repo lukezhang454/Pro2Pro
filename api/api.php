@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 
 // Set up database parameters
 $dbVariables = array();
-$lines = file("config.txt");
+$lines = file('config.txt');
 foreach($lines as $line) {
   $temp = explode('=', $line, 2);
   $dbVariables[$temp[0]] = trim($temp[1]);
@@ -16,20 +16,34 @@ $configuration = [
   'settings' =>[
     'displayErrorDetails' => true, 
     'db' => [
-      'dbname' => $dbVariables["dbdb"],
-      'host' => $dbVariables["dbhost"],
-      'user' => $dbVariables["dbuser"],
-      'pass' => $dbVariables["dbpasswd"],
+      'dbname' => $dbVariables['dbdb'],
+      'host' => $dbVariables['dbhost'],
+      'user' => $dbVariables['dbuser'],
+      'pass' => $dbVariables['dbpasswd'],
     ],
   ], 
 ];
 $container = new \Slim\Container($configuration);
 $app = new \Slim\App($container);
 
+// Enable lazy CORS from: https://www.slimframework.com/docs/cookbook/enable-cors.html
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+      return $response;
+      });
+
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET');
+});
+
+
 // Set up logger
 $container['logger'] = function($c) {
   $logger = new \Monolog\Logger('api_logger');
-  $file_handler = new \Monolog\Handler\StreamHandler("logs/app.log");
+  $file_handler = new \Monolog\Handler\StreamHandler('logs/app.log');
   $logger->pushHandler($file_handler);
   return $logger;
 };
@@ -37,7 +51,7 @@ $container['logger'] = function($c) {
 // Set up PDO database connection
 $container['db'] = function ($c) {
   $db = $c->get('settings')['db'];
-  $pdo = new PDO("mysql:host=".$db['host'].";dbname=".$db["dbname"].";charset=utf8mb4", $db['user'], $db['pass']);
+  $pdo = new PDO("mysql:host=".$db['host'].";dbname=".$db['dbname'].";charset=utf8mb4", $db['user'], $db['pass']);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   return $pdo;
@@ -76,7 +90,11 @@ $app->get('/seasons/{season}/regions/{region}/teams/{team}', function (Request $
   $season = $request->getAttribute('season');
   $region = $request->getAttribute('region');
   $team = $request->getAttribute('team');
-  $statement = $db->query("SELECT * FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' AND player.region='".$region."' AND player.team='".$team."'");
+  $statement = $db->prepare("SELECT * FROM player,stats WHERE player.id=stats.playerId AND stats.season = :season AND player.region = :region AND player.team = :team");
+  $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
+  $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
+  $statement->bindParam(':team', $team, PDO::PARAM_STR, 3);
+  $statement->execute();
   $data = array();
   if ($statement->rowCount() > 0) {
     loadData($data, $statement);
@@ -90,10 +108,13 @@ $app->get('/seasons/{season}/regions/{region}/teams', function (Request $request
   $db = $this->get('db');
   $season = $request->getAttribute('season');
   $region = $request->getAttribute('region');
-  $statement = $db->query("SELECT player.team FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' AND player.region='".$region."' GROUP BY player.team");
+  $statement = $db->prepare("SELECT player.team FROM player,stats WHERE player.id=stats.playerId AND stats.season = :season AND player.region = :region GROUP BY player.team");
+  $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
+  $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
+  $statement->execute();
   $data = array();
   while ($row = $statement->fetch()) {
-    array_push($data, $row["team"]);
+    array_push($data, $row['team']);
   }
   $response = $response->withJson($data);
   return $response;
@@ -103,10 +124,12 @@ $app->get('/seasons/{season}/regions/{region}/teams', function (Request $request
 $app->get('/seasons/{season}/regions', function (Request $request, Response $response) {
   $db = $this->get('db');
   $season = $request->getAttribute('season');
-  $statement = $db->query("SELECT region FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' GROUP BY player.region"); 
+  $statement = $db->prepare("SELECT region FROM player,stats WHERE player.id=stats.playerId AND stats.season = :season GROUP BY player.region"); 
+  $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
+  $statement->execute();
   $data = array();
   while ($row = $statement->fetch()) {
-    array_push($data, $row["region"]);
+    array_push($data, $row['region']);
   }
   $response = $response->withJson($data);
   return $response;
@@ -115,10 +138,11 @@ $app->get('/seasons/{season}/regions', function (Request $request, Response $res
 // Show valid seasons
 $app->get('/seasons', function (Request $request, Response $response) {
   $db = $this->get('db');
-  $statement = $db->query("SELECT season FROM stats GROUP BY season");
+  $statement = $db->prepare("SELECT season FROM stats GROUP BY season");
+  $statement->execute();
   $data = array();
   while ($row = $statement->fetch()) {
-    array_push($data, $row["season"]);
+    array_push($data, $row['season']);
   }
   $response = $response->withJson($data);
   return $response;
@@ -128,7 +152,9 @@ $app->get('/seasons', function (Request $request, Response $response) {
 $app->get('/regions/{region}', function (Request $request, Response $response) {
   $db = $this->get('db');
   $region = $request->getAttribute('region');
-  $statement = $db->query("SELECT * FROM player WHERE region='".$region."'");
+  $statement = $db->prepare("SELECT * FROM player WHERE region = :region");
+  $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
+  $statement->execute();
   $data = array();
   if ($statement->rowCount() > 0) {
     loadData($data, $statement);
@@ -140,10 +166,11 @@ $app->get('/regions/{region}', function (Request $request, Response $response) {
 // Show valid regions
 $app->get('/regions', function (Request $request, Response $response) {
   $db = $this->get('db');
-  $statement = $db->query("SELECT region FROM player GROUP BY region");
+  $statement = $db->prepare("SELECT region FROM player GROUP BY region");
+  $statement->execute();
   $data = array();
   while ($row = $statement->fetch()) {
-    array_push($data, $row["region"]);
+    array_push($data, $row['region']);
   }
   $response = $response->withJson($data);
   return $response;
