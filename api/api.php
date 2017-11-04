@@ -70,22 +70,88 @@ $app->add(function (Request $request, Response $response, callable $next) {
   return $next($request, $response);
 });
 
+// Select stats by season, region, team
+$app->get('/season/{season}/region/{region}/team/{team}', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $season = $request->getAttribute('season');
+  $region = $request->getAttribute('region');
+  $team = $request->getAttribute('team');
+  $statement = $db->query("SELECT * FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' AND player.region='".$region."' AND player.team='".$team."'");
+  $data = array();
+  if ($statement->rowCount() > 0) {
+    loadData($data, $statement);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
+// Show valid teams for given season, region
+$app->get('/season/{season}/region/{region}/team', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $season = $request->getAttribute('season');
+  $region = $request->getAttribute('region');
+  $statement = $db->query("SELECT player.team FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' AND player.region='".$region."' GROUP BY player.team");
+  $data = array();
+  while ($row = $statement->fetch()) {
+    array_push($data, $row["team"]);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
+// Show valid regions for given season
+$app->get('/season/{season}/region', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $season = $request->getAttribute('season');
+  $statement = $db->query("SELECT region FROM player,stats WHERE player.id=stats.playerId AND stats.season='".$season."' GROUP BY player.region"); 
+  $data = array();
+  while ($row = $statement->fetch()) {
+    array_push($data, $row["region"]);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
+// Show valid seasons
+$app->get('/season', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $statement = $db->query("SELECT season FROM stats GROUP BY season");
+  $data = array();
+  while ($row = $statement->fetch()) {
+    array_push($data, $row["season"]);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
 // Select players by region
 $app->get('/region/{region}', function (Request $request, Response $response) {
   $db = $this->get('db');
-  $statement = $db->query("SELECT region FROM player GROUP BY region");
-  $validRegions = array();
-  while ($row = $statement->fetch()) {
-    array_push($validRegions, strtolower($row["region"]));
-  }
-  $region = strtolower($request->getAttribute('region'));
-  if (is_null($region) || !in_array($region, $validRegions)) {
-    $response = $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('Page not found');
-    $this->logger->addError("Bad region request: ".$region);
-    return $response;
-  }
+  $region = $request->getAttribute('region');
   $statement = $db->query("SELECT * FROM player WHERE region='".$region."'");
   $data = array();
+  if ($statement->rowCount() > 0) {
+    loadData($data, $statement);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
+// Show valid regions
+$app->get('/region', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $statement = $db->query("SELECT region FROM player GROUP BY region");
+  $data = array();
+  while ($row = $statement->fetch()) {
+    array_push($data, $row["region"]);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
+$app->run();
+
+function loadData(&$data, $statement) {
   while ($row = $statement->fetch()) {
     $rowData = array();
     foreach(array_keys($row) as $key) {
@@ -93,22 +159,7 @@ $app->get('/region/{region}', function (Request $request, Response $response) {
     }
     array_push($data, $rowData);
   }
+}
 
-  $response = $response->withJson($data);
-  return $response;
-});
-
-// Display valid regions
-$app->get('/region', function (Request $request, Response $response) {
-  $db = $this->get('db');
-  $statement = $db->query("SELECT region FROM player GROUP BY region");
-  $validRegions = array();
-  while ($row = $statement->fetch()) {
-    array_push($validRegions, $row["region"]);
-  }
-  $response = $response->withJson($validRegions);
-  return $response;
-});
-$app->run();
 ?>
 
