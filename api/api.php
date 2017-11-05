@@ -182,7 +182,11 @@ function loadData(&$data, $statement) {
   while ($row = $statement->fetch()) {
     $rowData = array();
     foreach(array_keys($row) as $key) {
-      $rowData[$key] = $row[$key];
+      $value = $row[$key];
+      if (is_numeric($value)) {
+        $value = (int) $value;
+      }
+      $rowData[$key] = $value;
     }
     array_push($data, $rowData);
   }
