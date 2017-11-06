@@ -6,20 +6,25 @@ var index = angular.module('index', ['ui.bootstrap']);
 
 var baseUrl = "https://ryany.org/pro2pro/api";
 var SEASONS = baseUrl + "/seasons";
-var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "" };
+var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
 
 index.controller('homeController', function($scope) {
-    //Shouldn't have to make a request each time a team is selected
+
+    //Creates the player object with relevant stats and push it to scope variable
     function getPlayersByTeam(response, side){
         let players = [];
         response.forEach(function(player){
+            //for kda and csPerMin we multiply then round and then divide by 100
+            //so we only show up to 2 decimal places
             players.push(
                 {
                     name:player.name, 
                     gamesPlayed: player.gamesPlayed,
                     kills: player.kills, 
                     deaths: player.deaths,
-                    assists: player.assists
+                    assists: player.assists,
+                    kda: player.deaths == 0? "Perfect" : Math.round((player.kills + player.assists)/player.deaths*100)/100,
+                    csPerMin: Math.round(player.cs/player.minutesPlayed*100)/100
                 });
         });
         if(side==='left'){
@@ -30,6 +35,7 @@ index.controller('homeController', function($scope) {
         }
     }
 
+    //Sets the scope variable for teams within a region
     function getTeamsByRegion(response, side){
         if(side==='left'){
             $scope.teams1 = response;
@@ -39,6 +45,7 @@ index.controller('homeController', function($scope) {
         }
     }
     
+    //Gets all of the seasons
     function getSeasons(){
         return new Promise ((resolve, reject) =>{
             let seasons = [];
@@ -53,6 +60,7 @@ index.controller('homeController', function($scope) {
         });
     }
     
+    //Gets all of the available regions given a season
     function getRegions(season){
         let regions = [];
         $.get(baseUrl + `/seasons/${season}/regions`, function(response){
@@ -64,8 +72,8 @@ index.controller('homeController', function($scope) {
         });
     }
     
+    //Event handler when a team is selected from the dropdown
     $scope.onTeamChange = function(selectedTeam, side){
-
         if(side === 'left'){
             $.get(baseUrl + `/seasons/${$scope.$ctrl.selectedSeason}/regions/${$scope.selectedRegion1}/teams/${selectedTeam}`,
                 function( response ) {
@@ -80,34 +88,37 @@ index.controller('homeController', function($scope) {
         };
     }
     
+    //Event handler when a region is selected from the dropdown
     $scope.onRegionChange = function(selectedRegion, side){
         $.get(baseUrl + `/seasons/${$scope.$ctrl.selectedSeason}/regions/${selectedRegion}/teams`,
             function( response ) {
-                if(side === 'left'){
-                    $scope.$apply(getTeamsByRegion(response, side));
-                }
-                else if(side ==='right'){
-                    $scope.$apply(getTeamsByRegion(response,side));
-                }
+                $scope.$apply(getTeamsByRegion(response, side));
         });
     }
     
+    //Sets the stats dictionary for the selected player in the dropdown
     $scope.setPlayer = function(selectedPlayer, side){
-        if(side === 'left'){
-            $scope.stats1 = {};
-            $scope.stats1.Name = selectedPlayer.name;
-            $scope.stats1.GamesPlayed = selectedPlayer.gamesPlayed;
-            $scope.stats1.Kills = selectedPlayer.kills;
-            $scope.stats1.Deaths = selectedPlayer.deaths;
-            $scope.stats1.Assists = selectedPlayer.assists;
-        }
-        else if(side === 'right'){
-            $scope.stats2 = {};
-            $scope.stats2.Name = selectedPlayer.name;
-            $scope.stats2.GamesPlayed = selectedPlayer.gamesPlayed;
-            $scope.stats2.Kills = selectedPlayer.kills;
-            $scope.stats2.Deaths = selectedPlayer.deaths;
-            $scope.stats2.Assists = selectedPlayer.assists;
+        if(selectedPlayer){
+            if(side === 'left'){
+                $scope.stats1 = {};
+                $scope.stats1.Name = selectedPlayer.name;
+                $scope.stats1.GamesPlayed = selectedPlayer.gamesPlayed;
+                $scope.stats1.Kills = selectedPlayer.kills;
+                $scope.stats1.Deaths = selectedPlayer.deaths;
+                $scope.stats1.Assists = selectedPlayer.assists;
+                $scope.stats1.Kda = selectedPlayer.kda;
+                $scope.stats1.CSPerMin = selectedPlayer.csPerMin;
+            }
+            else if(side === 'right'){
+                $scope.stats2 = {};
+                $scope.stats2.Name = selectedPlayer.name;
+                $scope.stats2.GamesPlayed = selectedPlayer.gamesPlayed;
+                $scope.stats2.Kills = selectedPlayer.kills;
+                $scope.stats2.Deaths = selectedPlayer.deaths;
+                $scope.stats2.Assists = selectedPlayer.assists;
+                $scope.stats2.Kda = selectedPlayer.kda;
+                $scope.stats2.CSPerMin = selectedPlayer.csPerMin;
+            }
         }
     };
     
