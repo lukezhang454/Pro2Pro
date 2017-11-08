@@ -183,7 +183,10 @@ function loadData(&$data, $statement) {
     $rowData = array();
     foreach(array_keys($row) as $key) {
       $value = $row[$key];
-      if (is_numeric($value)) {
+      $floatValue = floatval($value);
+      if ($floatValue && intval($floatValue) != $floatValue) {
+        $value = $floatValue;
+      } else if (is_numeric($value)) {
         $value = (int) $value;
       }
       $rowData[$key] = $value;
