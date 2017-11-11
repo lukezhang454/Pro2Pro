@@ -23,21 +23,41 @@ td:first-child {
     border-radius:6px;
     -moz-border-radius:6px;
 	background-color: #1F2833;
-	margin-top: 120px;
-	width: 275px;
 }
 
-.leftForm{
+.playerTable{
+	margin-top: 120px;
+	width: 250px;
+}
+
+.team-left{
+	display:inline-block;
+	margin-right: 25px;
 	margin-left: 20%;
+}
+
+.team-right{
+	right:0px;
+	margin-right:20%
+}
+
+.team-name{
+	font-family:Impact, Charcoal, sans-serif;
+	color:#C5C6C7;
+	text-align:center;
+	margin-top: 50px;
+	font-size: 32px;
+}
+
+.team-table{
 	display: inline-block;
-	position:absolute;
+	width:200px;
+	margin-top:100px;
 }
 
 .rightForm{
-	display: inline-block;
 	right:0px;
-	margin-right: 20%;
-	position:absolute;
+	margin-right:32%;
 }
 
 .dropdown{
@@ -57,10 +77,20 @@ td:first-child {
 	color:#C5C6C7;
 }
 
+.leftForm, .rightForm, .team-right{
+	display: inline-block;
+	position:absolute;
+}
+
 .statLabel, .statValue{
 	font-weight:bold;
 	color: #C5C6C7;
 	font-family: Verdana, Geneva, sans-serif;
+}
+
+.statValue{
+	text-align: right;
+	width: 120px;
 }
 
 .topcorner{
@@ -68,4 +98,78 @@ td:first-child {
    top:0;
    right:0;
    margin-right: 5px;
+}
+
+@media only screen and (max-width: 1645px) {
+	.team-left{
+		margin-left: 10%;
+	}
+
+	.team-right{
+		margin-right:5%;
+	}
+
+	.rightForm{
+		margin-right:20%;
+	}
+
+}
+
+@media only screen and (max-width: 1350px) {
+	.team-left{
+		margin-left: 10px;
+	}
+
+	.team-right{
+		margin-right:5%;
+	}
+
+	.rightForm{
+		margin-right:30%;
+	}
+
+}
+
+@media only screen and (max-width: 1032px) {
+	.team-left{
+		margin-left: 10px;
+	}
+
+	.team-right{
+		margin-right:5px;
+	}
+
+	.rightForm{
+		margin-right:23%;
+	}
+
+}
+
+@media only screen and (max-width: 960px) {
+	.team-left{
+		margin-left: 10px;
+	}
+
+	.team-right{
+		margin-top: 400px;
+		margin-right:5px;
+		left:0;
+	}
+
+	.rightForm{
+		margin-top: 400px;
+		margin-right:23%;
+		left:230px;
+	}
+
+	.rightDropdown{
+		position:relative;
+		width: 150px;
+	}
+
+	.team-name-right{
+		text-align:left;
+		margin-left:80px;
+	}
+
 }

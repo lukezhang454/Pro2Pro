@@ -7,12 +7,17 @@ var index = angular.module('index', ['ui.bootstrap']);
 var baseUrl = "https://ryany.org/pro2pro/api";
 var SEASONS = baseUrl + "/seasons";
 var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
+var teamTableDict = {Kills: "", Deaths: "", Assists: "", Kda: ""};
 
 index.controller('homeController', function($scope) {
 
     //Creates the player object with relevant stats and push it to scope variable
-    function getPlayersByTeam(response, side){
+    function getPlayersAndSetTeamStats(response, teamName, side){
         let players = [];
+        let totalKills = 0;
+        let totalDeaths = 0;
+        let totalAssists = 0;
+
         response.forEach(function(player){
             //for kda and csPerMin we multiply then round and then divide by 100
             //so we only show up to 2 decimal places
@@ -26,12 +31,30 @@ index.controller('homeController', function($scope) {
                     kda: player.deaths == 0? "Perfect" : Math.round((player.kills + player.assists)/player.deaths*100)/100,
                     csPerMin: Math.round(player.cs/player.minutesPlayed*100)/100
                 });
+
+            totalKills += player.kills;
+            totalDeaths += player.deaths;
+            totalAssists += player.assists;
         });
-        if(side==='left'){
-            $scope.players1 = players;
-        }
-        else if(side==='right'){
-            $scope.players2 = players;
+        let teamKda = totalDeaths == 0? "Perfect" : Math.round((totalKills + totalAssists)/totalDeaths*100)/100;
+        if(teamName){
+            if(side==='left'){
+                $scope.players1 = players;
+                $scope.teamStats1 = {};
+                $scope.teamStats1.Kills = totalKills;
+                $scope.teamStats1.Deaths = totalDeaths;
+                $scope.teamStats1.Assists = totalAssists;
+                $scope.teamStats1.Kda = teamKda;
+
+            }
+            else if(side==='right'){
+                $scope.players2 = players;
+                $scope.teamStats2 = {};
+                $scope.teamStats2.Kills = totalKills;
+                $scope.teamStats2.Deaths = totalDeaths;
+                $scope.teamStats2.Assists = totalAssists;
+                $scope.teamStats2.Kda = teamKda;
+            }
         }
     }
 
@@ -77,14 +100,20 @@ index.controller('homeController', function($scope) {
         if(side === 'left'){
             $.get(baseUrl + `/seasons/${$scope.$ctrl.selectedSeason}/regions/${$scope.selectedRegion1}/teams/${selectedTeam}`,
                 function( response ) {
-                    $scope.$apply(getPlayersByTeam(response, side));
+                    $scope.$apply(getPlayersAndSetTeamStats(response, selectedTeam, side));
             });
+            if(selectedTeam){
+                $scope.teamName1 = selectedTeam;
+            }
         }
         else if(side ==='right'){
             $.get(baseUrl + `/seasons/${$scope.$ctrl.selectedSeason}/regions/${$scope.selectedRegion2}/teams/${selectedTeam}`,
                 function( response ) {
-                    $scope.$apply(getPlayersByTeam(response, side));
+                    $scope.$apply(getPlayersAndSetTeamStats(response, selectedTeam, side));
             });
+            if(selectedTeam){
+                $scope.teamName2 = selectedTeam;
+            }
         };
     }
     
@@ -125,4 +154,8 @@ index.controller('homeController', function($scope) {
     getSeasons().then(getRegions);
     $scope.stats1 = tableDict;
     $scope.stats2 = tableDict;
+    $scope.teamStats1 = teamTableDict;
+    $scope.teamStats2 = teamTableDict;
+    $scope.teamName1 = "Team Name";
+    $scope.teamName2 = "Team Name";
 })

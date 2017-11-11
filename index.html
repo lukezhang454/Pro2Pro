@@ -15,7 +15,21 @@
                 <select class="form-control" name="season" ng-init="$ctrl.selectedSeason = seasons[0]" ng-options="season for season in seasons" ng-model="$ctrl.selectedSeason">
                 </select>
             </div>
-            
+            <div class="team-left">
+            	<div class="team-name">
+            		{{teamName1}}
+            	</div>
+				<table class="table team-table">
+					<tr ng-repeat="(key, value) in teamStats1">
+						<td class="statLabel">
+							{{key}}
+						</td>
+						<td class="statValue">
+							{{value}}
+						</td>
+					</tr>
+				</table>
+            </div>
 			<div class="leftForm">
 				<div class="dropdown">
 					<select class="form-control" name="region" ng-options="region for region in regions" ng-model="selectedRegion1" ng-change="onRegionChange(selectedRegion1, 'left')">
@@ -32,7 +46,7 @@
 						</div>
 					</div>
 				</div>
-				<table class="table">
+				<table class="table playerTable">
 					<tr ng-repeat="(key, value) in stats1">
 						<td class="statLabel">
 							{{key}}
@@ -43,8 +57,7 @@
 					</tr>
 				</table>
 			</div>
-			
-			<span class="rightForm">
+			<div class="rightForm">
 				<div class="rightDropdown">
 					<select class="form-control" name="region" ng-options="region for region in regions" ng-model="selectedRegion2" ng-change="onRegionChange(selectedRegion2, 'right')">
 						<option value="">Select Region</option>
@@ -60,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-				<table class="table">
+				<table class="table playerTable">
 					<tr ng-repeat="(key, value) in stats2">
 						<td class="statLabel">
 							{{key}}
@@ -70,7 +83,22 @@
 						</td>
 					</tr>
 				</table>
-			</span>
+			</div>
+			<div class="team-right">
+            	<div class="team-name team-name-right">
+            		{{teamName2}}
+            	</div>
+				<table class="table team-table">
+					<tr ng-repeat="(key, value) in teamStats2">
+						<td class="statLabel">
+							{{key}}
+						</td>
+						<td class="statValue">
+							{{value}}
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</body>
 	
