@@ -5,6 +5,7 @@ import 'angular-ui-bootstrap';
 var index = angular.module('index', ['ui.bootstrap']);
 
 var baseUrl = "https://ryany.org/pro2pro/api";
+var imageUrl = "https://ryany.org/pro2pro/api/images/players/";
 var SEASONS = baseUrl + "/seasons";
 var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
 var teamTableDict = {Kills: "", Deaths: "", Assists: "", Kda: ""};
@@ -17,6 +18,7 @@ index.controller('homeController', function($scope) {
         let totalKills = 0;
         let totalDeaths = 0;
         let totalAssists = 0;
+        let playerImage = "";
 
         response.forEach(function(player){
             //for kda and csPerMin we multiply then round and then divide by 100
@@ -29,7 +31,8 @@ index.controller('homeController', function($scope) {
                     deaths: player.deaths,
                     assists: player.assists,
                     kda: player.deaths == 0? "Perfect" : Math.round((player.kills + player.assists)/player.deaths*100)/100,
-                    csPerMin: Math.round(player.cs/player.minutesPlayed*100)/100
+                    csPerMin: Math.round(player.cs/player.minutesPlayed*100)/100,
+                    playerSlug: player.playerSlug
                 });
 
             totalKills += player.kills;
@@ -45,7 +48,6 @@ index.controller('homeController', function($scope) {
                 $scope.teamStats1.Deaths = totalDeaths;
                 $scope.teamStats1.Assists = totalAssists;
                 $scope.teamStats1.Kda = teamKda;
-
             }
             else if(side==='right'){
                 $scope.players2 = players;
@@ -125,7 +127,7 @@ index.controller('homeController', function($scope) {
         });
     }
     
-    //Sets the stats dictionary for the selected player in the dropdown
+    //Sets the stats dictionary for the selected player in the dropdown and player image
     $scope.setPlayer = function(selectedPlayer, side){
         if(selectedPlayer){
             if(side === 'left'){
@@ -137,6 +139,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats1.Assists = selectedPlayer.assists;
                 $scope.stats1.Kda = selectedPlayer.kda;
                 $scope.stats1.CSPerMin = selectedPlayer.csPerMin;
+                $scope.playerImage1 = imageUrl+selectedPlayer.playerSlug;
             }
             else if(side === 'right'){
                 $scope.stats2 = {};
@@ -147,6 +150,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats2.Assists = selectedPlayer.assists;
                 $scope.stats2.Kda = selectedPlayer.kda;
                 $scope.stats2.CSPerMin = selectedPlayer.csPerMin;
+                $scope.playerImage2 = imageUrl+selectedPlayer.playerSlug;
             }
         }
     };

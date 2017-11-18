@@ -15,6 +15,9 @@
                 <select class="form-control" name="season" ng-init="$ctrl.selectedSeason = seasons[0]" ng-options="season for season in seasons" ng-model="$ctrl.selectedSeason">
                 </select>
             </div>
+            <div class="image-left">
+            	<img class="player-image" ng-src="{{playerImage1}}">
+            </div>
             <div class="team-left">
             	<div class="team-name">
             		{{teamName1}}
@@ -57,6 +60,9 @@
 					</tr>
 				</table>
 			</div>
+			<div class="image-right">
+            	<img class="player-image" ng-src="{{playerImage2}}">
+            </div>
 			<div class="rightForm">
 				<div class="rightDropdown">
 					<select class="form-control" name="region" ng-options="region for region in regions" ng-model="selectedRegion2" ng-change="onRegionChange(selectedRegion2, 'right')">
