@@ -176,6 +176,30 @@ $app->get('/regions', function (Request $request, Response $response) {
   return $response;
 });
 
+// Select player image
+$app->get('/images/players/{player}', function (Request $request, Response $response) {
+  $player = $request->getAttribute('player');
+  $image = @file_get_contents('../resources/images/players/'.$player.'.png');
+  if ($image === false) {
+    $response->write('Player image "'.$player.'.png" doesn\'t exist');
+    return $response->withStatus(404);
+  }
+  $response->write($image);
+  return $response->withHeader('Content-Type', 'image/png');
+});
+
+// Select team image
+$app->get('/images/teams/{team}', function (Request $request, Response $response) {
+  $team = $request->getAttribute('team');
+  $image = @file_get_contents('../resources/images/teams/'.$team.'.png');
+  if ($image === false) {
+    $response->write('Team image "'.$team.'.png" doesn\'t exist');
+    return $response->withStatus(404);
+  }
+  $response->write($image);
+  return $response->withHeader('Content-Type', 'image/png');
+});
+
 $app->run();
 
 function loadData(&$data, $statement) {
