@@ -6,6 +6,7 @@ var index = angular.module('index', ['ui.bootstrap']);
 
 var baseUrl = "https://ryany.org/pro2pro/api";
 var imageUrl = "https://ryany.org/pro2pro/api/images/players/";
+var teamImageUrl = "https://ryany.org/pro2pro/api/images/teams/";
 var SEASONS = baseUrl + "/seasons";
 var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
 var teamTableDict = {Kills: "", Deaths: "", Assists: "", Kda: ""};
@@ -38,24 +39,38 @@ index.controller('homeController', function($scope) {
             totalKills += player.kills;
             totalDeaths += player.deaths;
             totalAssists += player.assists;
+
         });
         let teamKda = totalDeaths == 0? "Perfect" : Math.round((totalKills + totalAssists)/totalDeaths*100)/100;
         if(teamName){
+
             if(side==='left'){
+                //clear any current stats and images
+                $scope.stats1 = tableDict;
                 $scope.players1 = players;
+                $('.image-left').children(".player-image").attr('src', '');
+
                 $scope.teamStats1 = {};
                 $scope.teamStats1.Kills = totalKills;
                 $scope.teamStats1.Deaths = totalDeaths;
                 $scope.teamStats1.Assists = totalAssists;
                 $scope.teamStats1.Kda = teamKda;
+                $scope.teamImage1 = teamImageUrl+response[0].teamSlug;
+                $('.image-left').children(".team-image").show();
             }
             else if(side==='right'){
+                //clear any current stats and images
+                $scope.stats2 = tableDict;
                 $scope.players2 = players;
+                $('.image-right').children(".player-image").attr('src', '');
+
                 $scope.teamStats2 = {};
                 $scope.teamStats2.Kills = totalKills;
                 $scope.teamStats2.Deaths = totalDeaths;
                 $scope.teamStats2.Assists = totalAssists;
                 $scope.teamStats2.Kda = teamKda;
+                $scope.teamImage2 = teamImageUrl+response[0].teamSlug;
+                $('.image-right').children(".team-image").show();
             }
         }
     }
@@ -63,9 +78,25 @@ index.controller('homeController', function($scope) {
     //Sets the scope variable for teams within a region
     function getTeamsByRegion(response, side){
         if(side==='left'){
+            //clear existing stats and images
+            $scope.stats1 = tableDict;
+            $scope.teamStats1 = teamTableDict;
+            $('.image-left').children(".player-image").attr('src', '');
+            $('.image-left').children(".team-image").attr('src', '');
+            //workaround to remove broken image border because width and height
+            //is explicitly set in style
+            $('.image-left').children(".team-image").hide();
+
             $scope.teams1 = response;
         }
         else if(side==='right'){
+            //clear existing stats and images
+            $scope.stats2 = tableDict;
+            $scope.teamStats2 = teamTableDict;
+            $('.image-right').children(".player-image").attr('src', '');
+            $('.image-right').children(".team-image").attr('src', '');
+            $('.image-right').children(".team-image").hide();
+
             $scope.teams2 = response;
         }
     }
@@ -92,6 +123,7 @@ index.controller('homeController', function($scope) {
             response.forEach(function(region){
                 regions.push(region);
             });
+
             $scope.regions = regions;
             $scope.$apply();
         });
