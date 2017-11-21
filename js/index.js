@@ -81,6 +81,7 @@ index.controller('homeController', function($scope) {
             //clear existing stats and images
             $scope.stats1 = tableDict;
             $scope.teamStats1 = teamTableDict;
+            $scope.teamName1 = "Team Name"
             $('.image-left').children(".player-image").attr('src', '');
             $('.image-left').children(".team-image").attr('src', '');
             //workaround to remove broken image border because width and height
@@ -93,6 +94,7 @@ index.controller('homeController', function($scope) {
             //clear existing stats and images
             $scope.stats2 = tableDict;
             $scope.teamStats2 = teamTableDict;
+            $scope.teamName2 = "Team Name"
             $('.image-right').children(".player-image").attr('src', '');
             $('.image-right').children(".team-image").attr('src', '');
             $('.image-right').children(".team-image").hide();
@@ -194,4 +196,6 @@ index.controller('homeController', function($scope) {
     $scope.teamStats2 = teamTableDict;
     $scope.teamName1 = "Team Name";
     $scope.teamName2 = "Team Name";
+    $('.image-left').children(".team-image").hide();
+    $('.image-right').children(".team-image").hide();
 })
