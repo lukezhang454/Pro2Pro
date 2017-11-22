@@ -49,6 +49,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats1 = tableDict;
                 $scope.players1 = players;
                 $('.image-left').children(".player-image").attr('src', '');
+                $('.image-left').children(".player-image").hide();
 
                 $scope.teamStats1 = {};
                 $scope.teamStats1.Kills = totalKills;
@@ -63,6 +64,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats2 = tableDict;
                 $scope.players2 = players;
                 $('.image-right').children(".player-image").attr('src', '');
+                $('.image-right').children(".player-image").hide();
 
                 $scope.teamStats2 = {};
                 $scope.teamStats2.Kills = totalKills;
@@ -87,6 +89,7 @@ index.controller('homeController', function($scope) {
             //workaround to remove broken image border because width and height
             //is explicitly set in style
             $('.image-left').children(".team-image").hide();
+            $('.image-left').children(".player-image").hide();
 
             $scope.teams1 = response;
         }
@@ -98,6 +101,7 @@ index.controller('homeController', function($scope) {
             $('.image-right').children(".player-image").attr('src', '');
             $('.image-right').children(".team-image").attr('src', '');
             $('.image-right').children(".team-image").hide();
+            $('.image-right').children(".player-image").hide();
 
             $scope.teams2 = response;
         }
@@ -174,6 +178,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats1.Kda = selectedPlayer.kda;
                 $scope.stats1.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage1 = imageUrl+selectedPlayer.playerSlug;
+                $('.image-left').children(".player-image").show();
             }
             else if(side === 'right'){
                 $scope.stats2 = {};
@@ -185,6 +190,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats2.Kda = selectedPlayer.kda;
                 $scope.stats2.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage2 = imageUrl+selectedPlayer.playerSlug;
+                $('.image-right').children(".player-image").show();
             }
         }
     };
@@ -198,4 +204,6 @@ index.controller('homeController', function($scope) {
     $scope.teamName2 = "Team Name";
     $('.image-left').children(".team-image").hide();
     $('.image-right').children(".team-image").hide();
+    $('.image-left').children(".player-image").hide();
+    $('.image-right').children(".player-image").hide();
 })
