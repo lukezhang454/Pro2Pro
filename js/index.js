@@ -11,6 +11,19 @@ var SEASONS = baseUrl + "/seasons";
 var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
 var teamTableDict = {Kills: "", Deaths: "", Assists: "", Kda: ""};
 
+index.directive('imageonload', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('load', function() {
+                $("#"+this.id).fadeIn();
+            });
+            element.bind('error', function(){
+            });
+        }
+    };
+});
+
 index.controller('homeController', function($scope) {
 
     //Creates the player object with relevant stats and push it to scope variable
@@ -49,7 +62,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats1 = tableDict;
                 $scope.players1 = players;
                 $('.image-left').children(".player-image").attr('src', '');
-                $('.image-left').children(".player-image").hide();
+                $('.image-left').children(".player-image").fadeOut();
 
                 $scope.teamStats1 = {};
                 $scope.teamStats1.Kills = totalKills;
@@ -57,14 +70,14 @@ index.controller('homeController', function($scope) {
                 $scope.teamStats1.Assists = totalAssists;
                 $scope.teamStats1.Kda = teamKda;
                 $scope.teamImage1 = teamImageUrl+response[0].teamSlug;
-                $('.image-left').children(".team-image").show();
+                $('.image-left').children(".team-image").fadeOut();
             }
             else if(side==='right'){
                 //clear any current stats and images
                 $scope.stats2 = tableDict;
                 $scope.players2 = players;
                 $('.image-right').children(".player-image").attr('src', '');
-                $('.image-right').children(".player-image").hide();
+                $('.image-right').children(".player-image").fadeOut();
 
                 $scope.teamStats2 = {};
                 $scope.teamStats2.Kills = totalKills;
@@ -72,7 +85,7 @@ index.controller('homeController', function($scope) {
                 $scope.teamStats2.Assists = totalAssists;
                 $scope.teamStats2.Kda = teamKda;
                 $scope.teamImage2 = teamImageUrl+response[0].teamSlug;
-                $('.image-right').children(".team-image").show();
+                $('.image-right').children(".team-image").fadeOut();
             }
         }
     }
@@ -178,7 +191,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats1.Kda = selectedPlayer.kda;
                 $scope.stats1.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage1 = imageUrl+selectedPlayer.playerSlug;
-                $('.image-left').children(".player-image").show();
+                $('.image-left').children(".player-image").fadeOut();
             }
             else if(side === 'right'){
                 $scope.stats2 = {};
@@ -190,7 +203,7 @@ index.controller('homeController', function($scope) {
                 $scope.stats2.Kda = selectedPlayer.kda;
                 $scope.stats2.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage2 = imageUrl+selectedPlayer.playerSlug;
-                $('.image-right').children(".player-image").show();
+                $('.image-right').children(".player-image").fadeOut();
             }
         }
     };
