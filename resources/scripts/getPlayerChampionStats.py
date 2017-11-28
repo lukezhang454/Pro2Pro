@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-import json
 import re
 from collections import OrderedDict
 
@@ -22,33 +21,33 @@ base_players_url = "http://api.lolesports.com/api/v2/tournamentPlayerStats?group
 stats_url = "https://lol.gamepedia.com/%s/Statistics/2017"
 
 for tournament in tournament_list:
-	players_url=base_players_url+tournament
+        players_url=base_players_url+tournament
 
-	response = requests.get(players_url)
-	data = json.loads(response.content)
-	players = data['stats']
+        response = requests.get(players_url)
+        data = response.json()
+        players = data['stats']
 
-	for player in players:
-	    stats_response = requests.get(stats_url % (player['name']))
-	    soup = BeautifulSoup(stats_response.content, 'html.parser')
-	    tables = soup.find_all('table', attrs={'class':'sortable'})
-	    dict = {'Season':'',
-	    		'Player':'',
-	    		'Champion':'',
-	    		'Games Played':'',
-	    		'Wins':'',
-	    		'Losses':''
-	    		}
-	    dict['Player'] = player['name']
-	    for table in tables:
-		    dict['Season'] = table.tr.th.a.string
-		    rows = table.find_all('tr')
-		    rows = rows[2:len(rows)]
-		    for row in rows:
-		        cols = row.find_all('td')
-		        dict['Champion'] = cols[0].a.get('title')
-		        dict['Games Played'] = cols[1].b.span.a.string
-		        dict['Wins'] = remove_non_numeric(cols[2].string)
-		        dict['Losses'] = remove_non_numeric(cols[3].string)
-		        print(dict)
+        for player in players:
+            stats_response = requests.get(stats_url % (player['name']))
+            soup = BeautifulSoup(stats_response.content, 'html.parser')
+            tables = soup.find_all('table', attrs={'class':'sortable'})
+            dict = {'Season':'',
+                        'Player':'',
+                        'Champion':'',
+                        'Games Played':'',
+                        'Wins':'',
+                        'Losses':''
+                        }
+            dict['Player'] = player['name']
+            for table in tables:
+                    dict['Season'] = table.tr.th.a.string
+                    rows = table.find_all('tr')
+                    rows = rows[2:len(rows)]
+                    for row in rows:
+                        cols = row.find_all('td')
+                        dict['Champion'] = cols[0].a.get('title')
+                        dict['Games Played'] = cols[1].b.span.a.string
+                        dict['Wins'] = remove_non_numeric(cols[2].string)
+                        dict['Losses'] = remove_non_numeric(cols[3].string)
+                        print(dict)
     
