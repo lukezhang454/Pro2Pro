@@ -1,10 +1,22 @@
+#!usr/bin/python3
+
 from bs4 import BeautifulSoup
 import requests
 import re
 from collections import OrderedDict
+import pymysql
+from config import *
+
+db = pymysql.connect(host=dbhost, user=dbuser, passwd=dbpasswd, db=dbdb, charset='utf8mb4')
+cursor = db.cursor()
 
 def remove_non_numeric(string):
     return re.sub('[^0-9]', '', string)
+
+def remove_region_from_season(string):
+    return re.sub(r'(EU |LCS |EUCS |Korea |LCK |NA |NACS )', '', string)
+
+
 '''
  The following ids are tournament ids for the region and season as specified.
  They are mainly used to get a list of players from that region. All of the tournaments
@@ -40,7 +52,7 @@ for tournament in tournament_list:
                         }
             dict['Player'] = player['name']
             for table in tables:
-                    dict['Season'] = table.tr.th.a.string
+                    dict['Season'] = remove_region_from_season(table.tr.th.a.string)
                     rows = table.find_all('tr')
                     rows = rows[2:len(rows)]
                     for row in rows:
@@ -49,5 +61,12 @@ for tournament in tournament_list:
                         dict['Games Played'] = cols[1].b.span.a.string
                         dict['Wins'] = remove_non_numeric(cols[2].string)
                         dict['Losses'] = remove_non_numeric(cols[3].string)
-                        print(dict)
+                        SQL = 'INSERT INTO gamepediaStats (name, champion, losses, wins, gamesPlayed, season) \
+                               VALUES ("{0}", "{1}", {2}, {3}, {4}, "{5}") \
+                               ON DUPLICATE KEY UPDATE name="{0}", champion="{1}", losses={2}, wins={3}, gamesPlayed={4}, season="{5}";'.format(dict['Player'], dict['Champion'], dict['Losses'], dict['Wins'], dict['Games Played'], dict['Season'])
+                        cursor.execute(SQL)
+                        print('Inserted ' + dict['Player'] + ' : ' + dict['Champion'] + ' : ' + dict['Season'])
+            db.commit()
+db.close()
+
     

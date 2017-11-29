@@ -84,6 +84,27 @@ $app->add(function (Request $request, Response $response, callable $next) {
   return $next($request, $response);
 });
 
+// Select player's champion stats by season, region, team, player
+$app->get('/seasons/{season}/regions/{region}/teams/{team}/players/{player}', function (Request $request, Response $response) {
+  $db = $this->get('db');
+  $season = $request->getAttribute('season');
+  $region = $request->getAttribute('region');
+  $team = $request->getAttribute('team');
+  $player = $request->getAttribute('player');
+  $statement = $db->prepare("SELECT champion, losses, wins, gamesPlayed FROM player, gamepediaStats WHERE player.name=gamepediaStats.name AND gamepediaStats.season = :season AND player.region = :region AND player.team = :team and player.name = :player");
+  $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
+  $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
+  $statement->bindParam(':team', $team, PDO::PARAM_STR, 3);
+  $statement->bindParam(':player', $player, PDO::PARAM_STR, 20);
+  $statement->execute();
+  $data = array();
+  if ($statement->rowCount() > 0) {
+    loadData($data, $statement);
+  }
+  $response = $response->withJson($data);
+  return $response;
+});
+
 // Select stats by season, region, team
 $app->get('/seasons/{season}/regions/{region}/teams/{team}', function (Request $request, Response $response) {
   $db = $this->get('db');
