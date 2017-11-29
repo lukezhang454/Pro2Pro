@@ -85,7 +85,7 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 
 // Select player's champion stats by season, region, team, player
-$app->get('/seasons/{season}/regions/{region}/teams/{team}/players/{player}', function (Request $request, Response $response) {
+$app->get('/seasons/{season}/regions/{region}/teams/{team}/players/{player}/champions', function (Request $request, Response $response) {
   $db = $this->get('db');
   $season = $request->getAttribute('season');
   $region = $request->getAttribute('region');

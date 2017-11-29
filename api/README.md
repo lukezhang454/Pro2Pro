@@ -18,7 +18,7 @@ Replace the placeholders {} to make a request:
   `https://ryany.org/pro2pro/api/seasons/{season}/regions/{region}/teams/{team}`
 
 ### Select player's champion stats by season, region, team, and player
-  `https://ryany.org/pro2pro/api/seasons/{season}/regions/{region}/teams/{team}/players/{player}`
+  `https://ryany.org/pro2pro/api/seasons/{season}/regions/{region}/teams/{team}/players/{player}/champions`
 
 ## Images
 ### Select player images
