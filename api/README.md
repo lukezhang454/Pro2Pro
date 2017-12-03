@@ -27,10 +27,8 @@ Replace the placeholders {} to make a request:
 ### Select team images
   `https://ryany.org/pro2pro/api/images/teams/{teamSlug}`
 
-## Player
-### Available regions:
-  `https://ryany.org/pro2pro/api/regions`
+### Select champion icon images
+  `https://ryany.org/pro2pro/api/images/champions/{championSlug}/icon`
 
-### Select player info by region:
-  `https://ryany.org/pro2pro/api/regions/{region}`
-
+### Select champion backdrop images
+  `https://ryany.org/pro2pro/api/images/champions/{championSlug}/backdrop`

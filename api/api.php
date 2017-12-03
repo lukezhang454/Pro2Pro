@@ -91,7 +91,7 @@ $app->get('/seasons/{season}/regions/{region}/teams/{team}/players/{player}/cham
   $region = $request->getAttribute('region');
   $team = $request->getAttribute('team');
   $player = $request->getAttribute('player');
-  $statement = $db->prepare("SELECT champion, losses, wins, gamesPlayed FROM player, gamepediaStats WHERE player.name=gamepediaStats.name AND gamepediaStats.season = :season AND player.region = :region AND player.team = :team and player.name = :player");
+  $statement = $db->prepare("SELECT champion, slug AS championSlug, losses, wins, gamesPlayed FROM player, gamepediaStats, champion WHERE player.name=gamepediaStats.name AND gamepediaStats.champion=champion.name AND gamepediaStats.season = :season AND player.region = :region AND player.team = :team and player.name = :player");
   $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
   $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
   $statement->bindParam(':team', $team, PDO::PARAM_STR, 3);
@@ -169,34 +169,6 @@ $app->get('/seasons', function (Request $request, Response $response) {
   return $response;
 });
 
-// Select players by region
-$app->get('/regions/{region}', function (Request $request, Response $response) {
-  $db = $this->get('db');
-  $region = $request->getAttribute('region');
-  $statement = $db->prepare("SELECT * FROM player WHERE region = :region");
-  $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
-  $statement->execute();
-  $data = array();
-  if ($statement->rowCount() > 0) {
-    loadData($data, $statement);
-  }
-  $response = $response->withJson($data);
-  return $response;
-});
-
-// Show valid regions
-$app->get('/regions', function (Request $request, Response $response) {
-  $db = $this->get('db');
-  $statement = $db->prepare("SELECT region FROM player GROUP BY region");
-  $statement->execute();
-  $data = array();
-  while ($row = $statement->fetch()) {
-    array_push($data, $row['region']);
-  }
-  $response = $response->withJson($data);
-  return $response;
-});
-
 // Select player image
 $app->get('/images/players/{player}', function (Request $request, Response $response) {
   $player = $request->getAttribute('player');
@@ -215,6 +187,30 @@ $app->get('/images/teams/{team}', function (Request $request, Response $response
   $image = @file_get_contents('../resources/images/teams/'.$team.'.png');
   if ($image === false) {
     $response->write('Team image "'.$team.'.png" doesn\'t exist');
+    return $response->withStatus(404);
+  }
+  $response->write($image);
+  return $response->withHeader('Content-Type', 'image/png');
+});
+
+// Select champion icon image
+$app->get('/images/champions/{champion}/icon', function (Request $request, Response $response) {
+  $champion = $request->getAttribute('champion');
+  $image = @file_get_contents('../resources/images/champions/icons/'.$champion.'.png');
+  if ($image === false) {
+    $response->write('Champion icon image "'.$champion.'.png" doesn\'t exist');
+    return $response->withStatus(404);
+  }
+  $response->write($image);
+  return $response->withHeader('Content-Type', 'image/png');
+});
+
+// Select champion backdrop image
+$app->get('/images/champions/{champion}/backdrop', function (Request $request, Response $response) {
+  $champion = $request->getAttribute('champion');
+  $image = @file_get_contents('../resources/images/champions/backdrops/'.$champion.'.jpg');
+  if ($image === false) {
+    $response->write('Champion backdrop image "'.$champion.'.jpg" doesn\'t exist');
     return $response->withStatus(404);
   }
   $response->write($image);
