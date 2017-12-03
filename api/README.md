@@ -1,8 +1,7 @@
 # API
-This is the API for the Pro2pro database. The API only supports GET requests and returns JSON.
-Contact Ryan if there are any questions or endpoint requests.
-Replace the placeholders {} to make a request:
-  e.g. https://ryany.org/pro2pro/api/regions/NA to retrieve players in the NA region
+This is the API for the Pro2pro database. The API only supports GET requests and returns JSON.  
+Contact Ryan if there are any questions or endpoint requests.  
+Replace the placeholders {} with the appropriate data to make a request.
 
 ## Stats
 ### Available seasons:
