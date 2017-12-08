@@ -16,8 +16,8 @@
                 </select>
             </div>
             <div class="image-left">
-            	<img class="team-image image-left2" id="left-team" imageonload ng-src="{{teamImage1}}">
-            	<img class="player-image image-left2" id="left-player" imageonload ng-src="{{playerImage1}}">
+            	<img class="team-image image-left2" id="left-team" onload ng-src="{{teamImage1}}">
+            	<img class="player-image image-left2" id="left-player" onload ng-src="{{playerImage1}}">
             </div>
 			<div class="leftForm">
 				<div class="dropdown">
@@ -60,10 +60,39 @@
 						</tr>
 					</table>
 	            </div>
-			</div>
+			</div>     
+            <div ng-if="championStats1" class="champion-images champion-images-left fade-element-in">
+            	<div ng-repeat="champion in championStats1.slice(0,3)">
+        			<img class="champion-image" onload ng-src="{{champion.championIcon}}">
+        		</div>
+        		<table class="table">
+        			<tr>
+						<th>Champion</th>
+						<th>Games Played</th>
+						<th>Wins</th>
+						<th>Losses</th>
+					</tr>
+					<tr ng-repeat="champion in championStats1">
+						<div class="statLabel">
+							<td>
+								{{champion.champion}}
+							</td>
+							<td>
+								{{champion.gamesPlayed}}
+							</td>
+							<td>
+								{{champion.wins}}
+							</td>
+							<td>
+								{{champion.losses}}
+							</td>
+						</div>
+					</tr>
+				</table>
+        	</div>
 			<div class="image-right">
-				<img class="team-image image-right2" id="right-team" imageonload ng-src="{{teamImage2}}">
-        		<img class="player-image image-right2" id="right-player" imageonload ng-src="{{playerImage2}}">
+				<img class="team-image image-right2" id="right-team" onload ng-src="{{teamImage2}}">
+        		<img class="player-image image-right2" id="right-player" onload ng-src="{{playerImage2}}">
             </div>
 			<div class="rightForm">
 				<div class="rightDropdown">
@@ -106,7 +135,36 @@
 						</tr>
 					</table>
 				</div>
-			</div>
+			</div>          
+			<div ng-if="championStats2" class="champion-images champion-images-right fade-element-in">
+            	<div ng-repeat="champion in championStats2.slice(0,3)">
+        			<img class="champion-image" ng-src="{{champion.championIcon}}">
+        		</div>
+        		<table class="table">
+        			<tr>
+						<th>Champion</th>
+						<th>Games Played</th>
+						<th>Wins</th>
+						<th>Losses</th>
+					</tr>
+					<tr ng-repeat="champion in championStats2">
+						<div class="statLabel">
+							<td>
+								{{champion.champion}}
+							</td>
+							<td>
+								{{champion.gamesPlayed}}
+							</td>
+							<td>
+								{{champion.wins}}
+							</td>
+							<td>
+								{{champion.losses}}
+							</td>
+						</div>
+					</tr>
+				</table>
+        	</div>
 		</div>
 	</body>
 	

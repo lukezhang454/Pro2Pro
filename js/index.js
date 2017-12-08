@@ -1,17 +1,19 @@
 import $ from 'jquery';
 import angular from 'angular';
 import 'angular-ui-bootstrap';
+import 'angular-animate'
 
-var index = angular.module('index', ['ui.bootstrap']);
+var index = angular.module('index', ['ui.bootstrap', 'ngAnimate']);
 
 var baseUrl = "https://ryany.org/pro2pro/api";
-var imageUrl = "https://ryany.org/pro2pro/api/images/players/";
-var teamImageUrl = "https://ryany.org/pro2pro/api/images/teams/";
+var imageUrl = baseUrl + "/images/players/";
+var teamImageUrl = baseUrl + "/images/teams/";
 var SEASONS = baseUrl + "/seasons";
+var championUrl = baseUrl + "/images/champions/"
 var tableDict = { Name: "", GamesPlayed: "", Kills: "", Deaths: "", Assists: "", Kda: "", CSPerMin: "" };
 var teamTableDict = {Kills: "", Deaths: "", Assists: "", Kda: ""};
 
-index.directive('imageonload', function() {
+index.directive('onload', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -63,6 +65,7 @@ index.controller('homeController', function($scope) {
                 $scope.players1 = players;
                 $('.image-left').children(".player-image").attr('src', '');
                 $('.image-left').children(".player-image").fadeOut();
+                $scope.championStats1 = undefined;
 
                 $scope.teamStats1 = {};
                 $scope.teamStats1.Kills = totalKills;
@@ -78,6 +81,7 @@ index.controller('homeController', function($scope) {
                 $scope.players2 = players;
                 $('.image-right').children(".player-image").attr('src', '');
                 $('.image-right').children(".player-image").fadeOut();
+                $scope.championStats2 = undefined;
 
                 $scope.teamStats2 = {};
                 $scope.teamStats2.Kills = totalKills;
@@ -103,6 +107,7 @@ index.controller('homeController', function($scope) {
             //is explicitly set in style
             $('.image-left').children(".team-image").hide();
             $('.image-left').children(".player-image").hide();
+            $scope.championStats1 = undefined;
 
             $scope.teams1 = response;
         }
@@ -115,6 +120,7 @@ index.controller('homeController', function($scope) {
             $('.image-right').children(".team-image").attr('src', '');
             $('.image-right').children(".team-image").hide();
             $('.image-right').children(".player-image").hide();
+            $scope.championStats2 = undefined;
 
             $scope.teams2 = response;
         }
@@ -177,9 +183,37 @@ index.controller('homeController', function($scope) {
                 $scope.$apply(getTeamsByRegion(response, side));
         });
     }
+
+    function setPlayerChampionStats(response, selectedPlayer, side){
+        let championStats = [];
+        response.forEach(function(champion){
+            championStats.push({
+                champion: champion.champion,
+                championSlug: champion.championSlug,
+                gamesPlayed: champion.gamesPlayed,
+                wins: champion.wins,
+                losses: champion.losses,
+                championIcon: championUrl + champion.championSlug + "/icon"
+            })
+        })
+
+        championStats.sort(function(a,b){
+            return b.gamesPlayed - a.gamesPlayed;
+        })
+        
+        if(side ==='left'){
+            $scope.championStats1 = championStats;
+        }
+        if(side ==='right'){
+            $scope.championStats2 = championStats;
+        }
+    }
     
     //Sets the stats dictionary for the selected player in the dropdown and player image
     $scope.setPlayer = function(selectedPlayer, side){
+    
+        let teamName = "";
+        let region = "";
         if(selectedPlayer){
             if(side === 'left'){
                 $scope.stats1 = {};
@@ -192,6 +226,8 @@ index.controller('homeController', function($scope) {
                 $scope.stats1.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage1 = imageUrl+selectedPlayer.playerSlug;
                 $('.image-left').children(".player-image").fadeOut();
+                region = $scope.selectedRegion1;
+                teamName = $scope.teamName1;
             }
             else if(side === 'right'){
                 $scope.stats2 = {};
@@ -204,8 +240,15 @@ index.controller('homeController', function($scope) {
                 $scope.stats2.CSPerMin = selectedPlayer.csPerMin;
                 $scope.playerImage2 = imageUrl+selectedPlayer.playerSlug;
                 $('.image-right').children(".player-image").fadeOut();
+                region = $scope.selectedRegion2;
+                teamName = $scope.teamName2;
             }
         }
+
+        $.get(baseUrl + `/seasons/${$scope.$ctrl.selectedSeason}/regions/${region}/teams/${teamName}/players/${selectedPlayer.playerSlug}/champions`,
+            function( response ) {
+                $scope.$apply(setPlayerChampionStats(response, selectedPlayer, side));
+        });
     };
     
     getSeasons().then(getRegions);

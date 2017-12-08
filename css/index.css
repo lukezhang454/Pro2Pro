@@ -85,9 +85,15 @@ td:first-child {
 	opacity:0.8;
 }
 
-.statLabel, .statValue{
+td{
 	font-weight:bold;
 	color: #FFFFFF;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+th{
+	font-weight:bold;
+	color: #66FCF1;
 	font-family: Verdana, Geneva, sans-serif;
 }
 
@@ -129,6 +135,59 @@ td:first-child {
 	display:inline-block;
 	position:absolute;
 	right:0px;
+}
+
+.champion-images{
+	position:absolute;
+	display:flex;
+	flex-flow: row wrap;
+	margin-top: 700px;
+}
+
+.champion-images-left{
+	justify-content: flex-start;
+	width:800px;
+	margin-left:100px;
+}
+
+.champion-images-right{
+	justify-content: flex-end;
+	width:900px;
+	right:100px;
+}
+
+.champion-image{
+	height:80px;
+	width:80px;
+}
+
+.champion-title{
+	font-family:Impact, Charcoal, sans-serif;
+	color:#C5C6C7;
+	text-align:center;
+	margin-top: 50px;
+	font-size: 32px;
+}
+
+.fade-element-in.ng-enter {
+  transition: 0.8s linear all;
+  opacity: 0;
+}
+
+.fade-element-in-init .fade-element-in.ng-enter {
+  opacity: 1;
+}
+
+.fade-element-in.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.fade-element-in.ng-leave {
+  transition: 1s linear all;
+  opacity: 1;
+}
+.fade-element-in.ng-leave.ng-leave-active {
+  opacity: 0;
 }
 
 @media only screen and (max-width: 1645px) {
