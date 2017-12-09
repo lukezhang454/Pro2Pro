@@ -91,6 +91,9 @@ $app->get('/seasons/{season}/regions/{region}/teams/{team}/players/{player}/cham
   $region = $request->getAttribute('region');
   $team = $request->getAttribute('team');
   $player = $request->getAttribute('player');
+  if (strtolower($player) === 'incarnati0n') {
+    $player = 'jensen';
+  }
   $statement = $db->prepare("SELECT champion, slug AS championSlug, losses, wins, gamesPlayed FROM player, gamepediaStats, champion WHERE player.name=gamepediaStats.name AND gamepediaStats.champion=champion.name AND gamepediaStats.season = :season AND player.region = :region AND player.team = :team and player.name = :player");
   $statement->bindParam(':season', $season, PDO::PARAM_STR, 25);
   $statement->bindParam(':region', $region, PDO::PARAM_STR, 25);
