@@ -42,10 +42,11 @@ td:first-child {
 
 .team-name{
 	font-family:Impact, Charcoal, sans-serif;
-	color:#C5C6C7;
+	color:#66FCF1;
 	text-align:center;
 	margin-top: 50px;
 	font-size: 32px;
+	opacity: 1;
 }
 
 .team-table{
@@ -142,23 +143,22 @@ th{
 	display:flex;
 	flex-flow: row wrap;
 	margin-top: 700px;
+	width:800px;
 }
 
 .champion-images-left{
 	justify-content: flex-start;
-	width:800px;
 	margin-left:100px;
 }
 
 .champion-images-right{
 	justify-content: flex-end;
-	width:900px;
 	right:100px;
 }
 
 .champion-image{
-	height:80px;
-	width:80px;
+	height:150px;
+	width:150px;
 }
 
 .champion-title{
@@ -183,11 +183,21 @@ th{
 }
 
 .fade-element-in.ng-leave {
-  transition: 1s linear all;
+  transition: 0.8s linear all;
   opacity: 1;
 }
 .fade-element-in.ng-leave.ng-leave-active {
   opacity: 0;
+}
+
+@media only screen and (max-width: 1800px) {
+	.champion-images{
+		width:600px;
+	}
+	.champion-image{
+		height:100px;
+		width:100px;
+	}
 }
 
 @media only screen and (max-width: 1645px) {
@@ -218,6 +228,14 @@ th{
 
 	.rightForm{
 		margin-right:30%;
+	}
+
+	.champion-images{
+		width:400px;
+	}
+	.champion-image{
+		height:80px;
+		width:80px;
 	}
 
 }
@@ -264,6 +282,15 @@ th{
 
 	.rightDropdown{
 		width: 150px;
+	}
+
+	.champion-images{
+		width:350px;
+		margin-top:1100px;
+	}
+	.champion-image{
+		height:60px;
+		width:60px;
 	}
 
 }

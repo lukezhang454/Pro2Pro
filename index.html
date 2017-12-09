@@ -62,28 +62,28 @@
 	            </div>
 			</div>     
             <div ng-if="championStats1" class="champion-images champion-images-left fade-element-in">
-            	<div ng-repeat="champion in championStats1.slice(0,3)">
-        			<img class="champion-image" onload ng-src="{{champion.championIcon}}">
+            	<div ng-repeat="champion in championStats1.slice(0,5)">
+        			<img class="champion-image champion-image-left" onload ng-src="{{champion.championIcon}}">
         		</div>
         		<table class="table">
         			<tr>
 						<th>Champion</th>
-						<th>Games Played</th>
-						<th>Wins</th>
-						<th>Losses</th>
+						<th class="statValue">Games Played</th>
+						<th class="statValue">Wins</th>
+						<th class="statValue">Losses</th>
 					</tr>
 					<tr ng-repeat="champion in championStats1">
 						<div class="statLabel">
 							<td>
 								{{champion.champion}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.gamesPlayed}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.wins}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.losses}}
 							</td>
 						</div>
@@ -137,28 +137,28 @@
 				</div>
 			</div>          
 			<div ng-if="championStats2" class="champion-images champion-images-right fade-element-in">
-            	<div ng-repeat="champion in championStats2.slice(0,3)">
+            	<div ng-repeat="champion in championStats2.slice(0,5)">
         			<img class="champion-image" ng-src="{{champion.championIcon}}">
         		</div>
         		<table class="table">
         			<tr>
 						<th>Champion</th>
-						<th>Games Played</th>
-						<th>Wins</th>
-						<th>Losses</th>
+						<th class="statValue">Games Played</th>
+						<th class="statValue">Wins</th>
+						<th class="statValue">Losses</th>
 					</tr>
 					<tr ng-repeat="champion in championStats2">
 						<div class="statLabel">
 							<td>
 								{{champion.champion}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.gamesPlayed}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.wins}}
 							</td>
-							<td>
+							<td class="statValue">
 								{{champion.losses}}
 							</td>
 						</div>
